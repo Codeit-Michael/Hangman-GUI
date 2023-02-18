@@ -18,29 +18,12 @@ def gallow(gallow_color=(0,0,0)):
 
 def man_pieces(body_color=(255,253,175)):
     head = pygame.draw.circle(screen, body_color, [210, 85], 20, 0)
-    body = pygame.draw.rect(screen, body_color, pygame.Rect(206, 105, 8, 50))
-    # r_arm_pieces list
-    r_arm_a = pygame.draw.rect(screen, body_color, pygame.Rect(198, 109, 6, 10))
-    r_arm_b = pygame.draw.rect(screen, body_color, pygame.Rect(195, 119, 6, 10))
-    r_arm_c = pygame.draw.rect(screen, body_color, pygame.Rect(192, 129, 6, 10))
-    r_arm_d = pygame.draw.rect(screen, body_color, pygame.Rect(189, 139, 6, 10))
-    # l_arm_pieces list
-    l_arm_a = pygame.draw.rect(screen, body_color, pygame.Rect(216, 109, 6, 10))
-    l_arm_b = pygame.draw.rect(screen, body_color, pygame.Rect(219, 119, 6, 10))
-    l_arm_c = pygame.draw.rect(screen, body_color, pygame.Rect(222, 129, 6, 10))
-    l_arm_d = pygame.draw.rect(screen, body_color, pygame.Rect(225, 139, 6, 10))
-    # r_leg_pieces list
-    r_leg_a = pygame.draw.rect(screen, body_color, pygame.Rect(201, 148, 6, 10))
-    r_leg_b = pygame.draw.rect(screen, body_color, pygame.Rect(198, 158, 6, 10))
-    r_leg_c = pygame.draw.rect(screen, body_color, pygame.Rect(195, 168, 6, 10))
-    r_leg_d = pygame.draw.rect(screen, body_color, pygame.Rect(192, 178, 6, 10))
-    r_leg_e = pygame.draw.rect(screen, body_color, pygame.Rect(189, 188, 6, 10))
-    # l_leg_pieces list
-    l_leg_a = pygame.draw.rect(screen, body_color, pygame.Rect(213, 148, 6, 10))
-    l_leg_b = pygame.draw.rect(screen, body_color, pygame.Rect(216, 158, 6, 10))
-    l_leg_c = pygame.draw.rect(screen, body_color, pygame.Rect(219, 168, 6, 10))
-    l_leg_d = pygame.draw.rect(screen, body_color, pygame.Rect(222, 178, 6, 10))
-    l_leg_e = pygame.draw.rect(screen, body_color, pygame.Rect(225, 188, 6, 10))
+    body = pygame.draw.rect(screen, body_color, pygame.Rect(206, 105, 8, 45))
+    r_arm = pygame.draw.line(screen, body_color, [183, 149], [200, 107], 6)
+    l_arm = pygame.draw.line(screen, body_color, [231, 149], [218, 107], 6)
+    r_leg = pygame.draw.line(screen, body_color, [189, 198], [208, 148], 6)
+    l_leg = pygame.draw.line(screen, body_color, [224, 198], [210, 148], 6)
+
     pygame.display.update()
 
 guessed_word = "Guessed word: b*st"
