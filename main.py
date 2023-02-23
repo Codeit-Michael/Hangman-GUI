@@ -56,10 +56,6 @@ class Hangman():
         elif self.wrong_guess_count == 6:
             pygame.draw.line(screen, self.body_color, [224, 198], [210, 148], 6)
 
-        if self.wrong_guess_count == 6:
-            self.taking_guess = False
-            print('you lose')
-
 
     def _right_guess(self, guess_letter):
         index_positions = [index for index, item in enumerate(self.secret_word) if item == guess_letter]
@@ -67,7 +63,7 @@ class Hangman():
             self.guessed_word = self.guessed_word[0:i] + guess_letter + self.guessed_word[i+1:]
 
         # stacks a layer of color on guessed word to hide multiple right guesses stack
-        screen.fill(pygame.Color(self.background_color), (10, 350, 390, 20))
+        screen.fill(pygame.Color(self.background_color), (10, 370, 390, 20))
 
 
     def _wrong_guess(self, guess_letter):
@@ -76,7 +72,23 @@ class Hangman():
         self._man_pieces()
 
         # stacks a layer of color on wrong guesses to hide multiple wrong guesses stack
-        screen.fill(pygame.Color(self.background_color), (10, 400, 390, 20))
+        screen.fill(pygame.Color(self.background_color), (10, 420, 390, 20))
+
+
+    def _message(self):
+        if self.guessed_word == self.secret_word:
+            self.taking_guess = False
+            screen.fill(pygame.Color(0,0,79), (40, 218, 320, 30))
+            message = self.font.render("YOU WIN!!", True, (255,235,0))
+            screen.blit(message,(152,224))
+            
+        elif self.wrong_guess_count == 6:
+            self.taking_guess = False
+            screen.fill(pygame.Color("grey"), (40, 218, 320, 30))
+            message = self.font.render("YOU LOSE!!", True, (150,0,10))
+            screen.blit(message,(150,224))
+            word = self.font.render(f"secret word: {self.secret_word}", True, (255,255,255))
+            screen.blit(word,(10,300))
 
 
     def _guess_taker(self, guess_letter):
@@ -87,29 +99,23 @@ class Hangman():
                 self._wrong_guess(guess_letter)
 
 
-    def message(self):
-        pass
-        # this functions sends message depending on game situation
-        # *invalid guess message
-        # *losing message
-        # *winning message
-
-
     def main(self):
         # game's main components (no need to update)
         screen.fill(self.background_color)
         self._gallow()
         instructions = self.font.render('Press any key to take Guess', True, (9,255,78))
         screen.blit(instructions,(35,460))
-        print(self.secret_word)
 
         while self.running:
             # shows the guessed word in the game window
             guessed_word = self.font.render(f"guessed word: {self.guessed_word}", True, (0,0,138))
-            screen.blit(guessed_word,(10,350))
+            screen.blit(guessed_word,(10,370))
             # shows the wrong guesses in the game window
             wrong_guesses = self.font.render(f"wrong guesses: {' '.join(map(str, self.wrong_guesses))}", True, (125,0,0))
-            screen.blit(wrong_guesses,(10,400))
+            screen.blit(wrong_guesses,(10,420))
+
+            # checking game state
+            self._message()
         
             for self.event in pygame.event.get():
                 if self.event.type == pygame.QUIT:
