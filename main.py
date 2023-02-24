@@ -61,7 +61,6 @@ class Hangman():
         index_positions = [index for index, item in enumerate(self.secret_word) if item == guess_letter]
         for i in index_positions:
             self.guessed_word = self.guessed_word[0:i] + guess_letter + self.guessed_word[i+1:]
-
         # stacks a layer of color on guessed word to hide multiple right guesses stack
         screen.fill(pygame.Color(self.background_color), (10, 370, 390, 20))
 
@@ -70,25 +69,8 @@ class Hangman():
         self.wrong_guesses.append(guess_letter)
         self.wrong_guess_count += 1
         self._man_pieces()
-
         # stacks a layer of color on wrong guesses to hide multiple wrong guesses stack
         screen.fill(pygame.Color(self.background_color), (10, 420, 390, 20))
-
-
-    def _message(self):
-        if self.guessed_word == self.secret_word:
-            self.taking_guess = False
-            screen.fill(pygame.Color(0,0,79), (40, 218, 320, 30))
-            message = self.font.render("YOU WIN!!", True, (255,235,0))
-            screen.blit(message,(152,224))
-            
-        elif self.wrong_guess_count == 6:
-            self.taking_guess = False
-            screen.fill(pygame.Color("grey"), (40, 218, 320, 30))
-            message = self.font.render("YOU LOSE!!", True, (150,0,10))
-            screen.blit(message,(150,224))
-            word = self.font.render(f"secret word: {self.secret_word}", True, (255,255,255))
-            screen.blit(word,(10,300))
 
 
     def _guess_taker(self, guess_letter):
@@ -97,6 +79,24 @@ class Hangman():
                 self._right_guess(guess_letter)
             elif guess_letter not in self.secret_word and guess_letter not in self.wrong_guesses:
                 self._wrong_guess(guess_letter)
+
+
+    def _message(self):
+        if self.guessed_word == self.secret_word:
+            self.taking_guess = False
+            screen.fill(pygame.Color(0,0,79), (40, 218, 320, 30))
+            message = self.font.render("YOU WIN!!", True, (255,235,0))
+            screen.blit(message,(152,224))
+        elif self.wrong_guess_count == 6:
+            self.taking_guess = False
+            screen.fill(pygame.Color("grey"), (40, 218, 320, 30))
+            message = self.font.render("GAME OVER YOU LOSE!!", True, (150,0,10))
+            screen.blit(message,(78,224))
+            word = self.font.render(f"secret word: {self.secret_word}", True, (255,255,255))
+            screen.blit(word,(10,300))
+        # removes the instruction message if not taking guesses anymore
+        if not self.taking_guess:
+            screen.fill(pygame.Color(self.background_color), (35, 460, 390, 20))
 
 
     def main(self):
