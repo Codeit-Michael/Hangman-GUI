@@ -15,7 +15,7 @@ pygame.display.set_caption("Hangman")
 class Hangman():
     def __init__(self):
         with open("./words.txt", "r") as file:
-            # picks secret word and passing it's length
+            # picks secret word
             words = file.read().split("\n")
             self.secret_word = random.choice(words)
             # passing secret word's length for making letter blanks
@@ -44,24 +44,24 @@ class Hangman():
     # draw man's body parts for every wrong guess
     def _man_pieces(self):
         if self.wrong_guess_count == 1:
-            pygame.draw.circle(screen, self.body_color, [210, 85], 20, 0)
+            head = pygame.draw.circle(screen, self.body_color, [210, 85], 20, 0)
         elif self.wrong_guess_count == 2:
-            pygame.draw.rect(screen, self.body_color, pygame.Rect(206, 105, 8, 45))
+            body = pygame.draw.rect(screen, self.body_color, pygame.Rect(206, 105, 8, 45))
         elif self.wrong_guess_count == 3:
-            pygame.draw.line(screen, self.body_color, [183, 149], [200, 107], 6)
+            r_arm = pygame.draw.line(screen, self.body_color, [183, 149], [200, 107], 6)
         elif self.wrong_guess_count == 4:
-            pygame.draw.line(screen, self.body_color, [231, 149], [218, 107], 6),
+            l_arm = pygame.draw.line(screen, self.body_color, [231, 149], [218, 107], 6),
         elif self.wrong_guess_count == 5:
-            pygame.draw.line(screen, self.body_color, [189, 198], [208, 148], 6),
+            r_leg = pygame.draw.line(screen, self.body_color, [189, 198], [208, 148], 6),
         elif self.wrong_guess_count == 6:
-            pygame.draw.line(screen, self.body_color, [224, 198], [210, 148], 6)
+            l_leg = pygame.draw.line(screen, self.body_color, [224, 198], [210, 148], 6)
 
 
     def _right_guess(self, guess_letter):
         index_positions = [index for index, item in enumerate(self.secret_word) if item == guess_letter]
         for i in index_positions:
             self.guessed_word = self.guessed_word[0:i] + guess_letter + self.guessed_word[i+1:]
-        # stacks a layer of color on guessed word to hide multiple right guesses stack
+        # stacks a layer of color on guessed word to hide multiple guessed_word stack
         screen.fill(pygame.Color(self.background_color), (10, 370, 390, 20))
 
 
@@ -69,8 +69,6 @@ class Hangman():
         self.wrong_guesses.append(guess_letter)
         self.wrong_guess_count += 1
         self._man_pieces()
-        # stacks a layer of color on wrong guesses to hide multiple wrong guesses stack
-        screen.fill(pygame.Color(self.background_color), (10, 420, 390, 20))
 
 
     def _guess_taker(self, guess_letter):
@@ -82,18 +80,23 @@ class Hangman():
 
 
     def _message(self):
+        # win situation
         if self.guessed_word == self.secret_word:
             self.taking_guess = False
             screen.fill(pygame.Color(0,0,79), (40, 218, 320, 30))
             message = self.font.render("YOU WIN!!", True, (255,235,0))
             screen.blit(message,(152,224))
+
+        # lose situation
         elif self.wrong_guess_count == 6:
             self.taking_guess = False
             screen.fill(pygame.Color("grey"), (40, 218, 320, 30))
             message = self.font.render("GAME OVER YOU LOSE!!", True, (150,0,10))
             screen.blit(message,(78,224))
+            # shows the secret word if the player lose
             word = self.font.render(f"secret word: {self.secret_word}", True, (255,255,255))
             screen.blit(word,(10,300))
+
         # removes the instruction message if not taking guesses anymore
         if not self.taking_guess:
             screen.fill(pygame.Color(self.background_color), (35, 460, 390, 20))
@@ -121,6 +124,7 @@ class Hangman():
                 if self.event.type == pygame.QUIT:
                     self.running = False
 
+                # manages keys pressed
                 elif self.event.type == pygame.KEYDOWN:
                     if self.taking_guess:
                         self._guess_taker(self.event.unicode)
